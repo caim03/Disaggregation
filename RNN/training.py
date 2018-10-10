@@ -1,11 +1,11 @@
 import warnings; warnings.filterwarnings('ignore')
 import matplotlib as mpl
+mpl.use('Agg')
+
 from nilmtk import DataSet
 import matplotlib.pyplot as plt
 from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
-
-mpl.use('Agg')
 
 #from nilmtk.dataset_converters import convert_ukdale
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
