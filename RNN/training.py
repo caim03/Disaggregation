@@ -44,8 +44,8 @@ res_elec = result.buildings[TEST_BUILDING].elec
 predicted = res_elec['fridge']
 ground_truth = test_elec['fridge']
 
-predicted.power_series_all_data().plot()
-ground_truth.power_series_all_data().plot()
+plt.plot(predicted.power_series_all_data())
+plt.plot(ground_truth.power_series_all_data())
 plt.xlim('2014-08-22 00:00:00', '2014-08-22 23:59:00')
 plt.savefig("fridge.png")
 
