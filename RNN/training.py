@@ -26,7 +26,8 @@ train_meter = train_elec.submeters()['fridge'] # The kettle meter that is used a
 print("------ TRAINING ------")
 rnn.train(train_mains, train_meter, epochs=5, sample_period=6)
 rnn.export_model("../data/UKDALE/model-ukdale.h5")
-
+"""
+rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
 test.set_window(start="2014-06-29", end="2014-10-21")
 test_elec = test.buildings[TEST_BUILDING].elec
@@ -38,9 +39,6 @@ output = HDFDataStore(disag_filename, 'w')
 
 print("------ TESTING ------")
 rnn.disaggregate(test_mains, output, train_meter, sample_period=6)
-"""
-disag_filename = '../data/UKDALE/disag-out.h5' # The filename of the resulting datastore
-output = HDFDataStore(disag_filename, 'w')
 
 result = DataSet(disag_filename)
 res_elec = result.buildings[TEST_BUILDING].elec
