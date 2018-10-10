@@ -46,7 +46,7 @@ ground_truth = test_elec['fridge']
 
 plt.plot(predicted.power_series_all_data())
 plt.plot(ground_truth.power_series_all_data())
-plt.xlim('2014-08-22 00:00:00', '2014-08-22 23:59:00')
+plt.xlim('2013-09-22 00:00:00', '2013-09-22 23:59:00')
 plt.savefig("fridge.png")
 
 import metrics
