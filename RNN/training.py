@@ -45,7 +45,7 @@ ground_truth = test_elec['fridge']
 predicted.power_series_all_data().plot()
 ground_truth.power_series_all_data().plot()
 plt.xlim('2014-08-22 00:00:00', '2014-08-22 23:59:00')
-plt.save_fig("fridge.png")
+plt.savefig("fridge.png")
 
 import metrics
 print("============ Relative error in total energy: {}".format(metrics.relative_error_total_energy(predicted, ground_truth)))
