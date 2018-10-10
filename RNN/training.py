@@ -11,7 +11,7 @@ from nilmtk.datastore import HDFDataStore
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
 
 TRAIN_BUILDING = 1
-TEST_BUILDING = 5
+TEST_BUILDING = 2
 
 train = DataSet('../data/UKDALE/ukdale.h5')
 train.set_window(start="2013-04-12", end="2015-07-01") # Training data time window
