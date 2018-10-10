@@ -28,7 +28,7 @@ rnn.export_model("../data/UKDALE/model-ukdale.h5")
 """
 rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
-test.set_window(start="2013-03-09", end="2013-09-01")
+test.set_window(start="2013-03-09", end="2013-08-01")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
