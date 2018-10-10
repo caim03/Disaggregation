@@ -1,5 +1,10 @@
 import warnings; warnings.filterwarnings('ignore')
 import matplotlib as mpl
+from nilmtk import DataSet
+import matplotlib.pyplot as plt
+from rnndisaggregator import RNNDisaggregator
+from nilmtk.datastore import HDFDataStore
+
 mpl.use('Agg')
 
 #from nilmtk.dataset_converters import convert_ukdale
@@ -7,16 +12,13 @@ mpl.use('Agg')
 
 TRAIN_BUILDING = 1
 TEST_BUILDING = 5
-
-from nilmtk import DataSet
+"""
 train = DataSet('../data/UKDALE/ukdale.h5')
 train.set_window(start="2013-04-12", end="2015-07-01") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
-from rnndisaggregator import RNNDisaggregator
 rnn = RNNDisaggregator()
 
-import matplotlib.pyplot as plt
 
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()['fridge'] # The kettle meter that is used as a training target
@@ -36,6 +38,9 @@ output = HDFDataStore(disag_filename, 'w')
 
 print("------ TESTING ------")
 rnn.disaggregate(test_mains, output, train_meter, sample_period=6)
+"""
+disag_filename = '../data/UKDALE/disag-out.h5' # The filename of the resulting datastore
+output = HDFDataStore(disag_filename, 'w')
 
 result = DataSet(disag_filename)
 res_elec = result.buildings[TEST_BUILDING].elec
