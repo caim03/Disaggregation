@@ -28,7 +28,7 @@ rnn.export_model("../data/UKDALE/model-ukdale.h5")
 """
 rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
-test.set_window(start="2013-03-09", end="2013-06-01")
+test.set_window(start="2013-03-09", end="2013-05-01")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
@@ -46,7 +46,7 @@ ground_truth = test_elec['fridge']
 
 plt.plot(predicted.power_series_all_data())
 plt.plot(ground_truth.power_series_all_data())
-plt.xlim('2013-05-22 00:00:00', '2013-05-22 23:59:00')
+plt.xlim('2013-04-22 00:00:00', '2013-04-22 23:59:00')
 plt.savefig("fridge.png")
 
 import metrics
