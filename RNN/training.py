@@ -11,7 +11,7 @@ from nilmtk.datastore import HDFDataStore
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
 
 TRAIN_BUILDING = 1
-TEST_BUILDING = 2
+TEST_BUILDING = 4
 
 train = DataSet('../data/UKDALE/ukdale.h5')
 train.set_window(start="2013-04-12", end="2015-07-01") # Training data time window
@@ -28,7 +28,7 @@ rnn.export_model("../data/UKDALE/model-ukdale.h5")
 """
 rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
-test.set_window(start="2013-05-22", end="2013-10-03 06:16:00")
+test.set_window(start="2013-03-09", end="2013-09-24 06:15:14")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
@@ -46,7 +46,7 @@ ground_truth = test_elec['fridge']
 
 plt.plot(predicted.power_series_all_data())
 plt.plot(ground_truth.power_series_all_data())
-plt.xlim('2013-09-22 00:00:00', '2013-09-22 23:59:00')
+plt.xlim('2013-05-22 00:00:00', '2013-05-22 23:59:00')
 plt.savefig("fridge.png")
 
 import metrics
