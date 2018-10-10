@@ -19,7 +19,6 @@ train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
 rnn = RNNDisaggregator()
 
-
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()['fridge'] # The kettle meter that is used as a training target
 
@@ -27,6 +26,8 @@ print("------ TRAINING ------")
 rnn.train(train_mains, train_meter, epochs=5, sample_period=6)
 rnn.export_model("../data/UKDALE/model-ukdale.h5")
 """
+rnn = RNNDisaggregator()
+
 rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
 test.set_window(start="2014-06-29", end="2014-10-21")
