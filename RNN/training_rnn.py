@@ -4,6 +4,7 @@ mpl.use('Agg')
 
 from nilmtk import DataSet
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
 
@@ -11,7 +12,7 @@ from nilmtk.datastore import HDFDataStore
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
 
 TRAIN_BUILDING = 1
-TEST_BUILDING = 4
+TEST_BUILDING = 2
 
 train = DataSet('../data/UKDALE/ukdale.h5')
 train.set_window(start="2013-04-12", end="2015-07-01") # Training data time window
@@ -26,9 +27,10 @@ print("------ TRAINING ------")
 rnn.train(train_mains, train_meter, epochs=5, sample_period=6)
 rnn.export_model("../data/UKDALE/model-ukdale.h5")
 """
+"""
 rnn.import_model("../data/UKDALE/model-ukdale.h5")
 test = DataSet('../data/UKDALE/ukdale.h5')
-test.set_window(start="2013-03-09", end="2013-04-01")
+test.set_window(start="2013-05-22", end="2013-09-24")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
@@ -38,17 +40,35 @@ output = HDFDataStore(disag_filename, 'w')
 
 print("------ TESTING ------")
 rnn.disaggregate(test_mains, output, train_meter, sample_period=6)
+"""
+
+test = DataSet('../data/UKDALE/ukdale.h5')
+test.set_window(start="2013-05-22", end="2013-09-24")
+test_elec = test.buildings[TEST_BUILDING].elec
+test_mains = test_elec.mains()
+
+disag_filename = '../data/UKDALE/disag-out.h5' # The filename of the resulting datastore
 
 result = DataSet(disag_filename)
 res_elec = result.buildings[TEST_BUILDING].elec
 predicted = res_elec['fridge']
 ground_truth = test_elec['fridge']
 
-plt.plot(predicted.power_series_all_data())
-plt.plot(ground_truth.power_series_all_data())
-plt.xlim('2013-03-22 00:00:00', '2013-03-22 23:59:00')
+fig = plt.figure()
+ax = plt.subplot(111)
+ax.plot(predicted.power_series_all_data(), label='predicted')
+ax.plot(ground_truth.power_series_all_data(), label='ground truth')
+plt.xlim('2013-06-22 00:00:00', '2013-06-22 03:00:00')
+plt.xlabel('Time [Hours]')
+plt.ylabel('Power [W]')
+plt.title('Fridge Disaggregation')
+myFmt = mdates.DateFormatter('%H:%M')
+ax.xaxis.set_major_formatter(myFmt)
+ax.legend()
 plt.savefig("fridge.png")
 
+"""
 import metrics
 print("============ Relative error in total energy: {}".format(metrics.relative_error_total_energy(predicted, ground_truth)))
 print("============ Mean absolute error(in Watts): {}".format(metrics.mean_absolute_error(predicted, ground_truth)))
+"""
