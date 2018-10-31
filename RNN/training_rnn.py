@@ -9,7 +9,7 @@ from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
 import sys
 
-appl = ['fridge', 'washing_machine', 'television']
+appl = ['fridge', 'washing machine', 'television']
 
 #from nilmtk.dataset_converters import convert_ukdale
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
