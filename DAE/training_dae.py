@@ -51,7 +51,7 @@ else:
 
 # dae.import_model("../data/UKDALE/dae-ukdale.h5")
 test = DataSet(DATASET)
-test.set_window(start="2013-09-01", end="2013-10-31")
+test.set_window(start="2017-09-01", end="2017-10-31")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
