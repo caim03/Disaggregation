@@ -13,15 +13,19 @@ appl = ['fridge', 'washing machine', 'television']
 
 #from nilmtk.dataset_converters import convert_ukdale
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
-if len(sys.argv) < 2:
+if len(sys.argv) < 3:
     print("Error in arguments usage\n")
     exit()
 
 APPLIANCE = sys.argv[1]
-
 if APPLIANCE not in appl:
     print("Error in type of applicance\n")
     exit()
+
+if sys.argv[2] == 'True':
+    TRAINING = True
+else:
+    TRAINING = False
 
 DATASET = '../data/ENEA/enea.h5'
 MODEL = '../data/ENEA/model-lstm-' + APPLIANCE + 'enea.h5'
@@ -38,11 +42,14 @@ rnn = RNNDisaggregator()
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used as a training target
 
-#print("------ TRAINING ------")
-#rnn.train(train_mains, train_meter, epochs=5, sample_period=1)
-#rnn.export_model(MODEL)
+if TRAINING:
+    print("------ TRAINING ------")
+    rnn.train(train_mains, train_meter, epochs=5, sample_period=1)
+    rnn.export_model(MODEL)
+else:
+    print("------ IMPORT MODEL ------")
+    rnn.import_model(MODEL)
 
-rnn.import_model(MODEL)
 test = DataSet(DATASET)
 test.set_window(start="2017-09-01", end="2017-10-31")
 test_elec = test.buildings[TEST_BUILDING].elec
@@ -62,6 +69,7 @@ fig = plt.figure()
 ax = plt.subplot(111)
 ax.plot(predicted.power_series_all_data(), label='predicted')
 ax.plot(ground_truth.power_series_all_data(), label='ground truth')
+
 plt.xlim('2017-09-18 00:00:00', '2017-09-18 23:59:59')
 plt.xlabel('Time')
 plt.ylabel('Power [W]')
