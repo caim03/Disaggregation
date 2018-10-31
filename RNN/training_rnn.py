@@ -7,13 +7,19 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
+import sys
 
 #from nilmtk.dataset_converters import convert_ukdale
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
+if len(sys.argv) < 2:
+    print("Error in arguments usage\n")
+    exit()
+
+APPLIANCE = sys.argv[1]
+
 DATASET = '../data/ENEA/enea.h5'
-MODEL = '../data/ENEA/model-lstm-enea.h5'
-DISAG = '../data/ENEA/disag-lstm-out.h5'
-APPLIANCE = 'fridge'
+MODEL = '../data/ENEA/model-lstm-' + APPLIANCE + 'enea.h5'
+DISAG = '../data/ENEA/disag-lstm-' + APPLIANCE + 'out.h5'
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
 
@@ -53,11 +59,11 @@ ax.plot(ground_truth.power_series_all_data(), label='ground truth')
 plt.xlim('2017-09-18 00:00:00', '2017-09-18 23:59:59')
 plt.xlabel('Time')
 plt.ylabel('Power [W]')
-plt.title('Fridge Disaggregation')
+plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
-plt.savefig("fridge_lstm.png")
+plt.savefig(APPLIANCE + "_lstm.png")
 
 import metrics
 print("============ Relative error in total energy: {}".format(metrics.relative_error_total_energy(predicted, ground_truth)))
