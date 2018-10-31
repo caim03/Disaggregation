@@ -9,6 +9,8 @@ from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
 import sys
 
+appl = ['fridge', 'washing_machine', 'television']
+
 #from nilmtk.dataset_converters import convert_ukdale
 #convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
 if len(sys.argv) < 2:
@@ -16,6 +18,10 @@ if len(sys.argv) < 2:
     exit()
 
 APPLIANCE = sys.argv[1]
+
+if APPLIANCE not in appl:
+    print("Error in type of applicance\n")
+    exit()
 
 DATASET = '../data/ENEA/enea.h5'
 MODEL = '../data/ENEA/model-lstm-' + APPLIANCE + 'enea.h5'
