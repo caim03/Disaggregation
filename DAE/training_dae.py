@@ -7,13 +7,27 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from daedisaggregator import DAEDisaggregator
 from nilmtk.datastore import HDFDataStore
+import sys
 
-#from nilmtk.dataset_converters import convert_ukdale
-#convert_ukdale('./data/UKDALE', './data/UKDALE/ukdale.h5')  # Skip if we already have the data in .h5 file
+appl = ['fridge', 'washing machine', 'television']
+
+if len(sys.argv) < 3:
+    print("Error in arguments usage\n")
+    exit()
+
+APPLIANCE = sys.argv[1]
+if APPLIANCE not in appl:
+    print("Error in type of applicance\n")
+    exit()
+
+if sys.argv[2] == 'True':
+    TRAINING = True
+else:
+    TRAINING = False
+
 DATASET = '../data/ENEA/enea.h5'
-MODEL = '../data/ENEA/model-dae-enea.h5'
-DISAG = '../data/ENEA/disag-dae-out.h5'
-APPLIANCE = 'fridge'
+MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
+DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
 SEQUENCE = 256
@@ -27,9 +41,13 @@ dae = DAEDisaggregator(SEQUENCE)
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used as a training target
 
-print("------ TRAINING ------")
-dae.train(train_mains, train_meter, epochs=50, sample_period=1)
-dae.export_model(MODEL)
+if TRAINING:
+    print("------ TRAINING ------")
+    dae.train(train_mains, train_meter, epochs=50, sample_period=1)
+    dae.export_model(MODEL)
+else:
+    print("------ IMPORT MODEL ------")
+    dae.import_model(MODEL)
 
 # dae.import_model("../data/UKDALE/dae-ukdale.h5")
 test = DataSet(DATASET)
@@ -52,14 +70,14 @@ fig = plt.figure()
 ax = plt.subplot(111)
 ax.plot(predicted.power_series_all_data(), label='predicted')
 ax.plot(ground_truth.power_series_all_data(), label='ground truth')
-#plt.xlim('2013-06-22 00:00:00', '2013-06-22 23:59:00')
-plt.xlabel('Time [Hours]')
+#plt.xlim('2017-09-18 00:00:00', '2017-09-18 23:59:59')
+plt.xlabel('Time')
 plt.ylabel('Power [W]')
-plt.title('Fridge Disaggregation')
+plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
-plt.savefig("fridge_dae.png")
+plt.savefig(APPLIANCE + "_dae.png")
 
 
 import metrics
