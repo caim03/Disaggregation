@@ -32,7 +32,7 @@ train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used 
 
 rnn.import_model(MODEL)
 test = DataSet(DATASET)
-test.set_window(start="2013-09-01", end="2013-10-31")
+test.set_window(start="2017-09-01", end="2017-10-31")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
