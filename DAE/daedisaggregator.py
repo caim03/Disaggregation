@@ -330,6 +330,7 @@ class DAEDisaggregator(Disaggregator):
 
         # 1D Conv
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
         model.add(Flatten())
 
         # Fully Connected Layers
@@ -347,7 +348,8 @@ class DAEDisaggregator(Disaggregator):
         # 1D Conv
         model.add(Reshape(((sequence_len-0), 8)))
         model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1))
-
+        model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1))
+        
         model.compile(loss='mse', optimizer='adam')
         plot_model(model, to_file='model.png', show_shapes=True)
 
