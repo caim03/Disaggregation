@@ -14,6 +14,7 @@ from keras.models import load_model
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv1D, Reshape, Dropout
 from keras.utils import plot_model
+from keras import optimizers
 
 from nilmtk.utils import find_nearest
 from nilmtk.feature_detectors import cluster
@@ -32,7 +33,7 @@ class DAEDisaggregator(Disaggregator):
        the minimum length of an acceptable chunk
     '''
 
-    def __init__(self, sequence_length):
+    def __init__(self, sequence_length, fine_tuning):
         '''Initialize disaggregator
         Parameters
         ----------
@@ -43,7 +44,18 @@ class DAEDisaggregator(Disaggregator):
         self.mmax = None
         self.sequence_length = sequence_length
         self.MIN_CHUNK_LENGTH = sequence_length
-        self.model = self._create_model(self.sequence_length)
+        self.fine_tune = fine_tuning
+
+        if self.fine_tune:
+            self.method = 'SGD'
+        else:
+            self.method = 'adam'
+
+        self.model = self._create_model(self.sequence_length, self.method)
+
+    def fine_tuning(self, path):
+        print("Loading weights...")
+        self.model.load_weights(path)
 
     def train(self, mains, meter, epochs=1, batch_size=16, **load_kwargs):
         '''Train
@@ -323,34 +335,35 @@ class DAEDisaggregator(Disaggregator):
         tchunk = chunk * mmax
         return tchunk
 
-    def _create_model(self, sequence_len):
+    def _create_model(self, sequence_len, method):
         '''Creates the Auto encoder module described in the paper
         '''
         model = Sequential()
 
         # 1D Conv
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
-        model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
         model.add(Flatten())
 
         # Fully Connected Layers
-        model.add(Dropout(0.5))
+        model.add(Dropout(0.1))
         model.add(Dense((sequence_len-0)*8, activation='relu'))
 
-        model.add(Dropout(0.5))
+        model.add(Dropout(0.1))
         model.add(Dense(128, activation='relu'))
 
-        model.add(Dropout(0.5))
+        model.add(Dropout(0.1))
         model.add(Dense((sequence_len-0)*8, activation='relu'))
 
-        model.add(Dropout(0.5))
+        model.add(Dropout(0.1))
 
         # 1D Conv
         model.add(Reshape(((sequence_len-0), 8)))
         model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1))
-        model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1))
-        
-        model.compile(loss='mse', optimizer='adam')
-        plot_model(model, to_file='model.png', show_shapes=True)
 
+        if method == 'SGD':
+            model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
+        else:
+            model.compile(loss='mse', optimizer='adam')
+
+        plot_model(model, to_file='model.png', show_shapes=True)
         return model

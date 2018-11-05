@@ -11,7 +11,7 @@ import sys
 
 appl = ['fridge', 'washing machine', 'television']
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
     print("Error in arguments usage\n")
     exit()
 
@@ -25,18 +25,28 @@ if sys.argv[2] == 'True':
 else:
     TRAINING = False
 
+if sys.argv[3] == 'fine_tune':
+    FINE_TUNING = True
+else:
+    FINE_TUNING = False
+
 DATASET = '../data/ENEA/enea.h5'
 MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
 DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
+UKDALE_MODEL = '../data/UKDALE/dae-ukdale.h5' # Vale solo per il frigorifero per ora
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
-SEQUENCE = 128
+SEQUENCE = 256
 
 train = DataSet(DATASET)
 train.set_window(start="2017-03-11", end="2017-09-30") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
-dae = DAEDisaggregator(SEQUENCE)
+dae = DAEDisaggregator(SEQUENCE, FINE_TUNING)
+
+if FINE_TUNING:
+    print("------ FINE TUNING ------")
+    dae.fine_tuning(UKDALE_MODEL)
 
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used as a training target
