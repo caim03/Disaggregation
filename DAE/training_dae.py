@@ -30,10 +30,10 @@ MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
 DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
-SEQUENCE = 256
+SEQUENCE = 128
 
 train = DataSet(DATASET)
-train.set_window(start="2017-03-11", end="2017-08-31") # Training data time window
+train.set_window(start="2017-03-11", end="2017-09-30") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
 dae = DAEDisaggregator(SEQUENCE)
@@ -51,7 +51,7 @@ else:
 
 # dae.import_model("../data/UKDALE/dae-ukdale.h5")
 test = DataSet(DATASET)
-test.set_window(start="2017-09-01", end="2017-10-31")
+test.set_window(start="2017-10-01", end="2017-10-31")
 test_elec = test.buildings[TEST_BUILDING].elec
 test_mains = test_elec.mains()
 
@@ -70,7 +70,7 @@ fig = plt.figure()
 ax = plt.subplot(111)
 ax.plot(predicted.power_series_all_data(), label='predicted')
 ax.plot(ground_truth.power_series_all_data(), label='ground truth')
-#plt.xlim('2017-09-18 00:00:00', '2017-09-18 23:59:59')
+plt.xlim('2017-10-08 00:00:00', '2017-10-08 23:59:59')
 plt.xlabel('Time')
 plt.ylabel('Power [W]')
 plt.title(APPLIANCE + ' Disaggregation')

@@ -333,16 +333,16 @@ class DAEDisaggregator(Disaggregator):
         model.add(Flatten())
 
         # Fully Connected Layers
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.5))
         model.add(Dense((sequence_len-0)*8, activation='relu'))
 
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.5))
         model.add(Dense(128, activation='relu'))
 
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.5))
         model.add(Dense((sequence_len-0)*8, activation='relu'))
 
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.5))
 
         # 1D Conv
         model.add(Reshape(((sequence_len-0), 8)))
