@@ -344,12 +344,10 @@ class DAEDisaggregator(Disaggregator):
         # Encoder
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
-        model.add(MaxPooling1D(pool_size=2, strides=2, padding="same",
-        kernel_initializer=initializers.RandomNormal(mean=0.1)))
+        model.add(MaxPooling1D(pool_size=2, strides=2, padding="same"))
         model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1,
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
-        model.add(MaxPooling1D(pool_size=2, strides=2, padding="same",
-        kernel_initializer=initializers.RandomNormal(mean=0.1)))
+        model.add(MaxPooling1D(pool_size=2, strides=2, padding="same"))
         model.add(Flatten())
 
         # Fully Connected Layers
@@ -364,10 +362,10 @@ class DAEDisaggregator(Disaggregator):
 
         # Decoder
         model.add(Reshape((sequence_len//4, 4)))
-        model.add(UpSampling1D(size=2, kernel_initializer=initializers.RandomNormal(mean=0.1)))
+        model.add(UpSampling1D(size=2))
         model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1,
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
-        model.add(UpSampling1D(size=2, kernel_initializer=initializers.RandomNormal(mean=0.1)))
+        model.add(UpSampling1D(size=2))
         model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1,
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
