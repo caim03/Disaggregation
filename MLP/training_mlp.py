@@ -99,4 +99,4 @@ print("============ Mean absolute error(in Watts): {}".format(metrics.mean_absol
 print("============ List of percentages for every days\n")
 date_series = pd.date_range(start="2017-10-01", end="2017-10-31")
 
-print(metrics.daily_relative_consume(predicted, ground_truth, test_mains))
+print(metrics.daily_relative_consume(predicted, ground_truth, test_mains, date_series))
