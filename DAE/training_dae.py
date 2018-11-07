@@ -9,6 +9,7 @@ import matplotlib.dates as mdates
 from daedisaggregator import DAEDisaggregator
 #from daedisaggregator2 import DAEDisaggregator
 from nilmtk.datastore import HDFDataStore
+import pandas as pd
 import sys
 
 appl = ['fridge', 'washing machine', 'television']

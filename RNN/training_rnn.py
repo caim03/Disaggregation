@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from rnndisaggregator import RNNDisaggregator
 from nilmtk.datastore import HDFDataStore
+import pandas as pd
 import sys
 
 appl = ['fridge', 'washing machine', 'television']
