@@ -1,4 +1,5 @@
 from nilmtk.electric import align_two_meters
+import pandas as pd
 import numpy as np
 
 def tp_tn_fp_fn(states_pred, states_ground):
