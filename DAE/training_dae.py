@@ -1,6 +1,7 @@
 import warnings; warnings.filterwarnings('ignore')
 import matplotlib as mpl
 mpl.use('Agg')
+mpl.rcParams['agg.path.chunksize'] = 10000
 
 from nilmtk import DataSet
 import matplotlib.pyplot as plt
