@@ -345,10 +345,10 @@ class DAEDisaggregator(Disaggregator):
         #model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
         #kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
         #model.add(Flatten())
-        model.add(Reshape(((sequence_len), 1)))
+
         # Fully Connected Layers
         #model.add(Dropout(0.1))
-        model.add(Dense(sequence_len, activation='relu',input_shape=(sequence_len, 1),
+        model.add(Dense(sequence_len, activation='relu',input_shape=(sequence_len,),
         kernel_initializer=initializers.RandomNormal(mean=0.1)))#provare con linear sui dense
 
         model.add(Dropout(0.1))
