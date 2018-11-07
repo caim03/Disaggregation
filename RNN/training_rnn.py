@@ -31,6 +31,9 @@ DISAG = '../data/ENEA/disag-lstm-' + APPLIANCE + 'out.h5'
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
 
+START_TEST = "2017-10-01"
+END_TEST = "2017-10-31"
+
 train = DataSet(DATASET)
 train.set_window(start="2017-03-11", end="2017-08-31") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
@@ -80,3 +83,7 @@ plt.savefig(APPLIANCE + "_lstm.png")
 import metrics
 print("============ Relative error in total energy: {}".format(metrics.relative_error_total_energy(predicted, ground_truth)))
 print("============ Mean absolute error(in Watts): {}".format(metrics.mean_absolute_error(predicted, ground_truth)))
+print("============ List of percentages for every days\n")
+date_series = pd.date_range(start=START_TEST, end=END_TEST, freq='D')
+
+print(metrics.daily_relative_consume(predicted, ground_truth, test_mains, date_series))

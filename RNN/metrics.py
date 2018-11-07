@@ -36,6 +36,34 @@ def recall_precision_accuracy_f1(pred, ground):
 
         return (res_recall,res_precision,res_accuracy,res_f1)
 
+def daily_relative_consume(pred, ground, aggregated, date_series):
+    percentages = pd.DataFrame(columns=['Predicted', 'Ground Truth'])
+    percentages = percentages.reindex(date_series)
+
+    pred_signal = pred.power_series_all_data()
+    ground_signal = ground.power_series_all_data()
+    aggr_signal = aggregated.power_series_all_data()
+
+    for date in date_series:
+        date_str_start = str(date)
+        date_str_end = str(date)[:11] + '23:59:59'
+
+        date_start = pd.to_datetime(date_str_start)
+        date_end = pd.to_datetime(date_str_end)
+
+        pred_hour = pred_signal[date_start:date_end]
+        ground_hour = ground_signal[date_start:date_end]
+        aggr_hour = aggr_signal[date_start:date_end]
+
+        pred_hour_total = pred_hour.sum()
+        ground_hour_total = ground_hour.sum()
+        aggr_hour_total = aggr_hour.sum()
+
+        perc = ((pred_hour_total/aggr_hour_total)*100, (ground_hour_total/aggr_hour_total)*100)
+        percentages.loc[date] = perc
+
+    return percentages
+
 def relative_error_total_energy(pred, ground):
     aligned_meters = align_two_meters(pred, ground)
     chunk_results = []
