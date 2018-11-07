@@ -343,33 +343,33 @@ class DAEDisaggregator(Disaggregator):
 
         # Encoder
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(MaxPooling1D(pool_size=2, strides=2, padding="same",
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1,
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(MaxPooling1D(pool_size=2, strides=2, padding="same",
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(Flatten())
 
         # Fully Connected Layers
         model.add(Dense(sequence_len, activation='relu',
-        kernel_initializer=RandomNormal(mean=0.1)))#provare con linear sui dense
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))#provare con linear sui dense
 
         model.add(Dense(128, activation='relu',
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         model.add(Dense(sequence_len, activation='relu',
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         # Decoder
         model.add(Reshape((sequence_len//4, 4)))
-        model.add(UpSampling1D(size=2, kernel_initializer=RandomNormal(mean=0.1)))
+        model.add(UpSampling1D(size=2, kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1,
-        kernel_initializer=RandomNormal(mean=0.1)))
-        model.add(UpSampling1D(size=2, kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
+        model.add(UpSampling1D(size=2, kernel_initializer=initializers.RandomNormal(mean=0.1)))
         model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1,
-        kernel_initializer=RandomNormal(mean=0.1)))
+        kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         if method == 'SGD':
             model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
