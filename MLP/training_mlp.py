@@ -9,6 +9,7 @@ import matplotlib.dates as mdates
 from mlpdisaggregator import MLPDisaggregator
 from nilmtk.datastore import HDFDataStore
 import sys
+import pandas as pd
 
 appl = ['fridge', 'washing machine', 'television']
 
