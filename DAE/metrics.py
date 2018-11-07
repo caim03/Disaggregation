@@ -56,6 +56,9 @@ def relative_error_total_energy(pred, ground):
         [E_pred, E_ground] = np.sum(chunk_results,axis=0)
         return abs(E_pred - E_ground) / float(max(E_pred,E_ground))
 
+def daily_relative_error(pred, ground, aggregated, start_date, end_date):
+    aggr_chunk = aggregated[start_date:end_date]
+
 def mean_absolute_error(pred, ground):
     aligned_meters = align_two_meters(pred, ground)
     total_sum = 0.0
