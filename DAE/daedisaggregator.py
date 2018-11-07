@@ -341,12 +341,12 @@ class DAEDisaggregator(Disaggregator):
         model = Sequential()
 
         # 1D Conv
-        model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(8, 4, activation="sigmoid", input_shape=(sequence_len, 1), padding="same", strides=1))
         model.add(Flatten())
 
         # Fully Connected Layers
         model.add(Dropout(0.1))
-        model.add(Dense((sequence_len-0)*8, activation='relu'))
+        model.add(Dense((sequence_len-0)*8, activation='relu'))#provare con linear sui dense
 
         model.add(Dropout(0.1))
         model.add(Dense(128, activation='relu'))
@@ -358,7 +358,7 @@ class DAEDisaggregator(Disaggregator):
 
         # 1D Conv
         model.add(Reshape(((sequence_len-0), 8)))
-        model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1))
+        model.add(Conv1D(1, 4, activation="sigmoid", padding="same", strides=1))
 
         if method == 'SGD':
             model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
