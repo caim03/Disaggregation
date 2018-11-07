@@ -344,7 +344,7 @@ class DAEDisaggregator(Disaggregator):
         # 1D Conv
         #model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
         #kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
-        #model.add(Flatten())
+        model.add(Flatten())
 
         # Fully Connected Layers
         #model.add(Dropout(0.1))
