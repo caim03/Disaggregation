@@ -15,6 +15,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Conv1D, Reshape, Dropout
 from keras.utils import plot_model
 from keras import optimizers
+from keras import initializers
 
 from nilmtk.utils import find_nearest
 from nilmtk.feature_detectors import cluster
@@ -341,7 +342,9 @@ class DAEDisaggregator(Disaggregator):
         model = Sequential()
 
         # 1D Conv
-        model.add(Conv1D(8, 4, activation="sigmoid", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(8, 4, activation="sigmoid", input_shape=(sequence_len, 1), padding="same", strides=1,
+        kernel_initializer=initializers.Constant(value=1)),
+        recurrent_initializer=initializers.Identity(gain=1.0))
         model.add(Flatten())
 
         # Fully Connected Layers
