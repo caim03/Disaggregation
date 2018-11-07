@@ -358,9 +358,9 @@ class DAEDisaggregator(Disaggregator):
         # Decoder
         model.add(Reshape(((sequence_len-0), 8)))
         model.add(UpSampling1D(size=2))
-        model.add(Conv1D(4, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(1, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
         model.add(UpSampling1D(size=2))
-        model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(1, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
 
         if method == 'SGD':
             model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
