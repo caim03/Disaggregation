@@ -283,6 +283,8 @@ class DAEDisaggregator(Disaggregator):
         X_batch = np.append(mains, np.zeros(additional))
         X_batch = np.reshape(X_batch, (int(len(X_batch) / s), s ,1))
 
+        X_batch = np.squeeze(X_batch, axis=-1)
+
         pred = self.model.predict(X_batch)
         pred = np.reshape(pred, (up_limit + additional))[:up_limit]
         column = pd.Series(pred, index=mains.index, name=0)
