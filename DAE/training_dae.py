@@ -5,8 +5,8 @@ mpl.use('Agg')
 from nilmtk import DataSet
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from daedisaggregator import DAEDisaggregator
-#from daedisaggregator2 import DAEDisaggregator
+#from daedisaggregator import DAEDisaggregator
+from daedisaggregator2 import DAEDisaggregator
 from nilmtk.datastore import HDFDataStore
 import sys
 
