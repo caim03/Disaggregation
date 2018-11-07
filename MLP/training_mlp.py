@@ -54,7 +54,7 @@ train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used 
 
 if TRAINING:
     print("------ TRAINING ------")
-    mlp.train(train_mains, train_meter, epochs=30, sample_period=1)
+    mlp.train(train_mains, train_meter, epochs=4, sample_period=1)
     mlp.export_model(MODEL)
 else:
     print("------ IMPORT MODEL ------")
