@@ -349,14 +349,14 @@ class DAEDisaggregator(Disaggregator):
         model.add(Flatten())
 
         # Fully Connected Layers
-        model.add(Dense((sequence_len-0)*8, activation='relu'))#provare con linear sui dense
+        model.add(Dense(sequence_len, activation='relu'))#provare con linear sui dense
 
         model.add(Dense(128, activation='relu'))
 
-        model.add(Dense((sequence_len-0)*8, activation='relu'))
+        model.add(Dense(sequence_len, activation='relu'))
 
         # Decoder
-        model.add(Reshape(((sequence_len-0)//4, 32)))
+        model.add(Reshape((sequence_len//4, 4)))
         model.add(UpSampling1D(size=2))
         model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1))
         model.add(UpSampling1D(size=2))
