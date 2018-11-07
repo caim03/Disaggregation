@@ -343,8 +343,7 @@ class DAEDisaggregator(Disaggregator):
 
         # 1D Conv
         model.add(Conv1D(8, 4, activation="sigmoid", input_shape=(sequence_len, 1), padding="same", strides=1,
-        kernel_initializer=initializers.Constant(value=1)),
-        recurrent_initializer=initializers.Identity(gain=1.0))
+        kernel_initializer=initializers.Constant(value=1)))
         model.add(Flatten())
 
         # Fully Connected Layers
