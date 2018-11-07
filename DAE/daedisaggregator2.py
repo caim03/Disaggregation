@@ -12,7 +12,7 @@ import sys
 
 from keras.models import load_model
 from keras.models import Sequential
-from keras.layers import Dense, Flatten, Conv1D, Reshape, Dropout
+from keras.layers import Dense, Flatten, Conv1D, Reshape, Dropout, MaxPooling1D, UpSampling1D
 from keras.utils import plot_model
 from keras import optimizers
 from keras import initializers
