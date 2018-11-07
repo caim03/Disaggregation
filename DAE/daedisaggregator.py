@@ -348,7 +348,7 @@ class DAEDisaggregator(Disaggregator):
 
         # Fully Connected Layers
         #model.add(Dropout(0.1))
-        model.add(Dense((sequence_len-0)*8, activation='relu',
+        model.add(Dense((sequence_len-0)*8, activation='relu',input_shape=(sequence_len, 1),
         kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))#provare con linear sui dense
 
         model.add(Dropout(0.1))
@@ -356,7 +356,7 @@ class DAEDisaggregator(Disaggregator):
         kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
 
         model.add(Dropout(0.1))
-        model.add(Dense((sequence_len-0)*8, activation='relu',
+        model.add(Dense((sequence_len-0)*8, activation='relu',input_shape=(sequence_len, 1),
         kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
 
         #model.add(Dropout(0.1))
