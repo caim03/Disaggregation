@@ -118,6 +118,9 @@ class DAEDisaggregator(Disaggregator):
         X_batch = np.reshape(X_batch, (int(len(X_batch) / s), s, 1))
         Y_batch = np.reshape(Y_batch, (int(len(Y_batch) / s), s, 1))
 
+        X_batch = np.squeeze(X_batch, axis=-1)
+        Y_batch = np.squeeze(Y_batch, axis=-1)
+
         self.model.fit(X_batch, Y_batch, batch_size=batch_size, epochs=epochs, shuffle=True)
 
     def train_across_buildings(self, mainlist, meterlist, epochs=1, batch_size=128, **load_kwargs):
@@ -344,11 +347,11 @@ class DAEDisaggregator(Disaggregator):
         # 1D Conv
         #model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
         #kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
-        model.add(Flatten())
+        #model.add(Flatten())
 
         # Fully Connected Layers
         #model.add(Dropout(0.1))
-        model.add(Dense(sequence_len, activation='relu',
+        model.add(Dense(sequence_len, activation='relu',input_shape=(sequence_len,),
         kernel_initializer=initializers.RandomNormal(mean=0.1)))#provare con linear sui dense
 
         model.add(Dropout(0.1))
