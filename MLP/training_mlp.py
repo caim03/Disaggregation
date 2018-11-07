@@ -6,8 +6,7 @@ mpl.rcParams['agg.path.chunksize'] = 10000
 from nilmtk import DataSet
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from daedisaggregator import DAEDisaggregator
-#from daedisaggregator2 import DAEDisaggregator
+from mlpdisaggregator import MLPDisaggregator
 from nilmtk.datastore import HDFDataStore
 import sys
 
@@ -33,9 +32,9 @@ else:
     FINE_TUNING = False
 
 DATASET = '../data/ENEA/enea.h5'
-MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
-DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
-UKDALE_MODEL = '../data/UKDALE/dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
+MODEL = '../data/ENEA/model-mlp-' + APPLIANCE + 'enea.h5'
+DISAG = '../data/ENEA/disag-mlp-' + APPLIANCE + 'out.h5'
+#UKDALE_MODEL = '../data/UKDALE/dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
 SEQUENCE = 256
@@ -44,22 +43,22 @@ train = DataSet(DATASET)
 train.set_window(start="2017-03-11", end="2017-09-30") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
-dae = DAEDisaggregator(SEQUENCE, FINE_TUNING)
+mlp = MLPDisaggregator(SEQUENCE, FINE_TUNING)
 
 if FINE_TUNING:
     print("------ FINE TUNING ------")
-    dae.fine_tuning(UKDALE_MODEL)
+    mlp.fine_tuning(UKDALE_MODEL)
 
 train_mains = train_elec.mains() # The aggregated meter that provides the input
 train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used as a training target
 
 if TRAINING:
     print("------ TRAINING ------")
-    dae.train(train_mains, train_meter, epochs=3, sample_period=1)
-    dae.export_model(MODEL)
+    mlp.train(train_mains, train_meter, epochs=3, sample_period=1)
+    mlp.export_model(MODEL)
 else:
     print("------ IMPORT MODEL ------")
-    dae.import_model(MODEL)
+    mlp.import_model(MODEL)
 
 # dae.import_model("../data/UKDALE/dae-ukdale.h5")
 test = DataSet(DATASET)
@@ -71,7 +70,7 @@ from nilmtk.datastore import HDFDataStore
 output = HDFDataStore(DISAG, 'w')
 
 print("------ TESTING ------")
-dae.disaggregate(test_mains, output, train_meter, sample_period=1)
+mlp.disaggregate(test_mains, output, train_meter, sample_period=1)
 
 result = DataSet(DISAG)
 res_elec = result.buildings[TEST_BUILDING].elec
@@ -82,7 +81,7 @@ fig = plt.figure()
 ax = plt.subplot(111)
 ax.plot(ground_truth.power_series_all_data(), label='ground truth')
 ax.plot(predicted.power_series_all_data(), label='predicted')
-plt.xlim('2017-10-08 00:00:00', '2017-10-08 01:00:00')
+#plt.xlim('2017-10-08 00:00:00', '2017-10-08 01:00:00')
 #plt.ylim(0, 300)
 plt.xlabel('Time')
 plt.ylabel('Power [W]')
@@ -90,7 +89,7 @@ plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
-plt.savefig(APPLIANCE + "_dae2.png")
+plt.savefig(APPLIANCE + "_mlp.png")
 
 
 import metrics

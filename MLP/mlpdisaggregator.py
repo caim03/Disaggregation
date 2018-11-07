@@ -22,7 +22,7 @@ from nilmtk.feature_detectors import cluster
 from nilmtk.disaggregate import Disaggregator
 from nilmtk.datastore import HDFDataStore
 
-class DAEDisaggregator(Disaggregator):
+class MLPDisaggregator(Disaggregator):
     '''Denoising Autoencoder disaggregator from Neural NILM
     https://arxiv.org/pdf/1507.06594.pdf
     Attributes
@@ -117,6 +117,9 @@ class DAEDisaggregator(Disaggregator):
 
         X_batch = np.reshape(X_batch, (int(len(X_batch) / s), s, 1))
         Y_batch = np.reshape(Y_batch, (int(len(Y_batch) / s), s, 1))
+
+        X_batch = np.squeeze(X_batch, axis=-1)
+        Y_batch = np.squeeze(Y_batch, axis=-1)
 
         self.model.fit(X_batch, Y_batch, batch_size=batch_size, epochs=epochs, shuffle=True)
 
@@ -280,6 +283,8 @@ class DAEDisaggregator(Disaggregator):
         X_batch = np.append(mains, np.zeros(additional))
         X_batch = np.reshape(X_batch, (int(len(X_batch) / s), s ,1))
 
+        X_batch = np.squeeze(X_batch, axis=-1)
+
         pred = self.model.predict(X_batch)
         pred = np.reshape(pred, (up_limit + additional))[:up_limit]
         column = pd.Series(pred, index=mains.index, name=0)
@@ -341,14 +346,7 @@ class DAEDisaggregator(Disaggregator):
         '''
         model = Sequential()
 
-        # 1D Conv
-        model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
-        kernel_initializer=initializers.RandomNormal(mean=0.1)))
-        model.add(Flatten())
-
-        # Fully Connected Layers
-        model.add(Dropout(0.1))
-        model.add(Dense((sequence_len-0)*8, activation='relu',
+        model.add(Dense(sequence_len*4, activation='relu',input_shape=(sequence_len,),
         kernel_initializer=initializers.RandomNormal(mean=0.1)))#provare con linear sui dense
 
         model.add(Dropout(0.1))
@@ -356,15 +354,8 @@ class DAEDisaggregator(Disaggregator):
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         model.add(Dropout(0.1))
-        model.add(Dense((sequence_len-0)*8, activation='relu',
+        model.add(Dense(sequence_len, activation='relu',
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
-
-        model.add(Dropout(0.1))
-
-        # 1D Conv
-        model.add(Reshape(((sequence_len-0), 8)))
-        model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1,
-        kernel_initializer=initializers.RandomNormal(mean=0.1, stddev=0.1)))
 
         if method == 'SGD':
             model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
