@@ -78,6 +78,8 @@ def daily_relative_consume(pred, ground, aggregated, date_series):
         perc = ((pred_hour_total/aggr_hour_total)*100, ((ground_hour_total/aggr_hour_total)*100))
         percentages.append(perc)
 
+    return percentages
+
 def mean_absolute_error(pred, ground):
     aligned_meters = align_two_meters(pred, ground)
     total_sum = 0.0
