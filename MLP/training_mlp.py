@@ -95,3 +95,7 @@ plt.savefig(APPLIANCE + "_mlp.png")
 import metrics
 print("============ Relative error in total energy: {}".format(metrics.relative_error_total_energy(predicted, ground_truth)))
 print("============ Mean absolute error(in Watts): {}".format(metrics.mean_absolute_error(predicted, ground_truth)))
+print("============ List of percentages for every days\n")
+date_series = pd.date_range(start="2017-10-01", end="2017-10-31")
+
+print(metrics.daily_relative_consume(predicted, ground_truth, test_mains))

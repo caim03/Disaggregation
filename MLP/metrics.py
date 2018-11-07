@@ -56,8 +56,26 @@ def relative_error_total_energy(pred, ground):
         [E_pred, E_ground] = np.sum(chunk_results,axis=0)
         return abs(E_pred - E_ground) / float(max(E_pred,E_ground))
 
-def daily_relative_error(pred, ground, aggregated, start_date, end_date):
-    aggr_chunk = aggregated[start_date:end_date]
+def daily_relative_consume(pred, ground, aggregated, date_series):
+    percentages = []
+
+    for date in date_series:
+        date_str_start = str(date) + '00:00:00'
+        date_str_end = str(date) + '23:59:59'
+
+        date_start = pd.to_datetime(date_str_start)
+        date_end = pd.to_datetime(date_str_end)
+
+        pred_hour = aggregated[date_start:date_end]
+        ground_hour = aggregated[date_start:date_end]
+        aggr_hour = aggregated[date_start:date_end]
+
+        pred_hour_total = pred_hour.sum()
+        ground_hour_total = ground_hour.sum()
+        aggr_hour_total = aggr_hour.sum()
+
+        perc = ((pred_hour_total/aggr_hour_total)*100, ((ground_hour_total/aggr_hour_total)*100))
+        percentages.append(perc)
 
 def mean_absolute_error(pred, ground):
     aligned_meters = align_two_meters(pred, ground)
