@@ -61,8 +61,8 @@ def daily_relative_consume(pred, ground, aggregated, date_series):
     percentages = []
 
     for date in date_series:
-        date_str_start = str(date) + '00:00:00'
-        date_str_end = str(date) + '23:59:59'
+        date_str_start = str(date)
+        date_str_end = str(date)[:11] + '23:59:59'
 
         date_start = pd.to_datetime(date_str_start)
         date_end = pd.to_datetime(date_str_end)
