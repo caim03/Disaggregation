@@ -58,8 +58,13 @@ def relative_error_total_energy(pred, ground):
         return abs(E_pred - E_ground) / float(max(E_pred,E_ground))
 
 def daily_relative_consume(pred, ground, aggregated, date_series):
-    percentages = []
+    percentages = pd.DataFrame(columns=['Predicted', 'Ground Truth'])
 
+    pred_signal = power_series_all_data()
+    ground_signal = power_series_all_data()
+    aggr_signal = power_series_all_data()
+
+    i = 0
     for date in date_series:
         date_str_start = str(date)
         date_str_end = str(date)[:11] + '23:59:59'
@@ -67,16 +72,17 @@ def daily_relative_consume(pred, ground, aggregated, date_series):
         date_start = pd.to_datetime(date_str_start)
         date_end = pd.to_datetime(date_str_end)
 
-        pred_hour = pred.power_series_all_data()[date_start:date_end]
-        ground_hour = ground.power_series_all_data()[date_start:date_end]
-        aggr_hour = aggregated.power_series_all_data()[date_start:date_end]
+        pred_hour = pred_signal[date_start:date_end]
+        ground_hour = ground_signal[date_start:date_end]
+        aggr_hour = aggr_signal[date_start:date_end]
 
         pred_hour_total = pred_hour.sum()
         ground_hour_total = ground_hour.sum()
         aggr_hour_total = aggr_hour.sum()
 
-        perc = ((pred_hour_total/aggr_hour_total)*100, ((ground_hour_total/aggr_hour_total)*100))
-        percentages.append(perc)
+        perc = ((pred_hour_total/aggr_hour_total)*100, (ground_hour_total/aggr_hour_total)*100)
+        percentages.loc[i] = perc
+        i = i+1
 
     return percentages
 
