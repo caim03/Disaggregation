@@ -53,7 +53,7 @@ train_meter = train_elec.submeters()[APPLIANCE] # The kettle meter that is used 
 
 if TRAINING:
     print("------ TRAINING ------")
-    dae.train(train_mains, train_meter, epochs=50, sample_period=1)
+    dae.train(train_mains, train_meter, epochs=10, sample_period=1)
     dae.export_model(MODEL)
 else:
     print("------ IMPORT MODEL ------")
