@@ -344,7 +344,7 @@ class DAEDisaggregator(Disaggregator):
         # Encoder
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
         model.add(MaxPooling1D(pool_size=2, strides=1, padding="same"))
-        model.add(Conv1D(4, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1))
+        model.add(Conv1D(4, 4, activation="linear", padding="same", strides=1))
         model.add(MaxPooling1D(pool_size=2, strides=1, padding="same"))
         model.add(Flatten())
 
