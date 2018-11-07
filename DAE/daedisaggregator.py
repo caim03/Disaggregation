@@ -343,28 +343,28 @@ class DAEDisaggregator(Disaggregator):
 
         # 1D Conv
         model.add(Conv1D(8, 4, activation="linear", input_shape=(sequence_len, 1), padding="same", strides=1,
-        kernel_initializer=initializers.Constant(value=1)))
+        kernel_initializer=initializers.RandomNormal()))
         model.add(Flatten())
 
         # Fully Connected Layers
         model.add(Dropout(0.1))
         model.add(Dense((sequence_len-0)*8, activation='relu',
-        kernel_initializer=initializers.Constant(value=1)))#provare con linear sui dense
+        kernel_initializer=initializers.RandomNormal()))#provare con linear sui dense
 
         model.add(Dropout(0.1))
         model.add(Dense(128, activation='relu',
-        kernel_initializer=initializers.Constant(value=1)))
+        kernel_initializer=initializers.RandomNormal()))
 
         model.add(Dropout(0.1))
         model.add(Dense((sequence_len-0)*8, activation='relu',
-        kernel_initializer=initializers.Constant(value=1)))
+        kernel_initializer=initializers.RandomNormal()))
 
         model.add(Dropout(0.1))
 
         # 1D Conv
         model.add(Reshape(((sequence_len-0), 8)))
         model.add(Conv1D(1, 4, activation="linear", padding="same", strides=1,
-        kernel_initializer=initializers.Constant(value=1)))
+        kernel_initializer=initializers.RandomNormal()))
 
         if method == 'SGD':
             model.compile(loss='mse', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9))
