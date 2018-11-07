@@ -356,7 +356,7 @@ class DAEDisaggregator(Disaggregator):
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         model.add(Dropout(0.1))
-        model.add(Dense(sequence_len, activation='relu',input_shape=(128,1)
+        model.add(Dense(sequence_len, activation='relu',input_shape=(128,1),
         kernel_initializer=initializers.RandomNormal(mean=0.1)))
 
         #model.add(Dropout(0.1))
