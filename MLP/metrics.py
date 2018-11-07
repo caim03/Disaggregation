@@ -67,9 +67,9 @@ def daily_relative_consume(pred, ground, aggregated, date_series):
         date_start = pd.to_datetime(date_str_start)
         date_end = pd.to_datetime(date_str_end)
 
-        pred_hour = aggregated[date_start:date_end]
-        ground_hour = aggregated[date_start:date_end]
-        aggr_hour = aggregated[date_start:date_end]
+        pred_hour = pred.power_series_all_data()[date_start:date_end]
+        ground_hour = ground.power_series_all_data()[date_start:date_end]
+        aggr_hour = aggregated.power_series_all_data()[date_start:date_end]
 
         pred_hour_total = pred_hour.sum()
         ground_hour_total = ground_hour.sum()
