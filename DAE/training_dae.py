@@ -33,7 +33,7 @@ else:
 DATASET = '../data/ENEA/enea.h5'
 MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
 DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
-UKDALE_MODEL = '../data/UKDALE/dae-ukdale.h5' # Vale solo per il frigorifero per ora
+UKDALE_MODEL = '../data/UKDALE/dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
 TRAIN_BUILDING = 1
 TEST_BUILDING = 1
 SEQUENCE = 256
@@ -78,16 +78,16 @@ ground_truth = test_elec[APPLIANCE]
 
 fig = plt.figure()
 ax = plt.subplot(111)
-ax.plot(predicted.power_series_all_data(), label='predicted')
 ax.plot(ground_truth.power_series_all_data(), label='ground truth')
-plt.xlim('2017-10-08 00:00:00', '2017-10-08 23:59:59')
+ax.plot(predicted.power_series_all_data(), label='predicted')
+#plt.xlim('2017-10-08 00:00:00', '2017-10-08 23:59:59')
 plt.xlabel('Time')
 plt.ylabel('Power [W]')
 plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
-plt.savefig(APPLIANCE + "_dae.png")
+plt.savefig(APPLIANCE + "_dae2.png")
 
 
 import metrics
