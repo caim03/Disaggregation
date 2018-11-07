@@ -353,7 +353,7 @@ class DAEDisaggregator(Disaggregator):
 
         model.add(Dense(128, activation='relu'))
 
-        model.add(Dense(((sequence_len-0)/4)*32, activation='relu'))
+        model.add(Dense(((sequence_len-0)//4)*32, activation='relu'))
 
         # Decoder
         model.add(Reshape(((sequence_len-0), 8)))
