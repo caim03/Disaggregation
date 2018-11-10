@@ -33,19 +33,19 @@ if sys.argv[3] == 'fine_tune':
 else:
     FINE_TUNING = False
 
-DATASET = '../data/ENEA/enea.h5'
+DATASET = '../data/ENEA/enea_builds.h5'
 MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
 DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
-UKDALE_MODEL = '../data/UKDALE/dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
-TRAIN_BUILDING = 1
-TEST_BUILDING = 1
+UKDALE_MODEL = '../data/UKDALE/model-dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
+TRAIN_BUILDING = 2
+TEST_BUILDING = 2
 SEQUENCE = 256
 
-START_TEST = "2017-10-01"
-END_TEST = "2017-10-31"
+START_TEST = "2017-02-19"
+END_TEST = "2017-10-30"
 
 train = DataSet(DATASET)
-train.set_window(start="2017-03-11", end="2017-09-30") # Training data time window
+train.set_window(start="2017-02-19", end="2017-09-30") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
 dae = DAEDisaggregator(SEQUENCE, FINE_TUNING)
@@ -63,7 +63,7 @@ if TRAINING:
     dae.export_model(MODEL)
 else:
     print("------ IMPORT MODEL ------")
-    dae.import_model(MODEL)
+    dae.import_model(UKDALE_MODEL)
 
 # dae.import_model("../data/UKDALE/dae-ukdale.h5")
 test = DataSet(DATASET)
@@ -94,7 +94,7 @@ plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
-plt.savefig(APPLIANCE + "_dae2.png")
+plt.savefig(APPLIANCE + "_dae.png")
 
 
 import metrics
@@ -103,4 +103,4 @@ print("============ Mean absolute error(in Watts): {}".format(metrics.mean_absol
 print("============ List of percentages for every days\n")
 date_series = pd.date_range(start=START_TEST, end=END_TEST, freq='D')
 
-print(metrics.daily_relative_consume(predicted, ground_truth, test_mains, date_series))
+metrics.daily_relative_consume(predicted, ground_truth, test_mains, date_series).to_csv('Percentages_' + APPLIANCE + '.csv')
