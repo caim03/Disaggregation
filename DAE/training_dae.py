@@ -33,19 +33,19 @@ if sys.argv[3] == 'fine_tune':
 else:
     FINE_TUNING = False
 
-DATASET = '../data/ENEA/enea_builds.h5'
-MODEL = '../data/ENEA/model-dae-' + APPLIANCE + 'enea.h5'
-DISAG = '../data/ENEA/disag-dae-' + APPLIANCE + 'out.h5'
-UKDALE_MODEL = '../data/UKDALE/model-dae-fridge-ukdale.h5' # Vale solo per il frigorifero per ora
-TRAIN_BUILDING = 2
+DATASET = '../data/UKDALE/ukdale.h5'
+MODEL = '../data/UKDALE/model-dae-' + APPLIANCE + 'ukdale.h5'
+DISAG = '../data/UKDALE/disag-dae-' + APPLIANCE + 'out.h5'
+UKDALE_MODEL = '../data/UKDALE/model-dae-washing machine-ukdale.h5'
+TRAIN_BUILDING = 1
 TEST_BUILDING = 2
 SEQUENCE = 256
 
-START_TEST = "2017-02-19"
-END_TEST = "2017-10-30"
+START_TEST = "2013-05-22"
+END_TEST = "2013-09-24"
 
 train = DataSet(DATASET)
-train.set_window(start="2017-02-19", end="2017-09-30") # Training data time window
+train.set_window(start="2013-04-12", end="2015-07-01") # Training data time window
 train_elec = train.buildings[TRAIN_BUILDING].elec # Get building 1 meters
 
 dae = DAEDisaggregator(SEQUENCE, FINE_TUNING)
