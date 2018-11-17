@@ -94,6 +94,8 @@ plt.title(APPLIANCE + ' Disaggregation')
 myFmt = mdates.DateFormatter('%D:%H:%M')
 ax.xaxis.set_major_formatter(myFmt)
 ax.legend()
+labels = ax.get_xticklabels()
+plt.setp(labels, rotation=30, fontsize=10)
 plt.savefig(APPLIANCE + "_dae.png")
 
 
