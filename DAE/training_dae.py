@@ -34,12 +34,12 @@ else:
     FINE_TUNING = False
 
 DATASET = '../data/UKDALE/ukdale.h5'
-MODEL = '../data/UKDALE/model-dae-' + APPLIANCE + 'ukdale.h5'
-DISAG = '../data/UKDALE/disag-dae-' + APPLIANCE + 'out.h5'
+MODEL = '../data/UKDALE/model-dae-1024-' + APPLIANCE + 'ukdale.h5'
+DISAG = '../data/UKDALE/disag-dae-1024-' + APPLIANCE + 'out.h5'
 UKDALE_MODEL = '../data/UKDALE/model-dae-washing machine-ukdale.h5'
 TRAIN_BUILDING = 1
 TEST_BUILDING = 2
-SEQUENCE = 256
+SEQUENCE = 1024
 
 START_TEST = "2013-05-22"
 END_TEST = "2013-09-24"
